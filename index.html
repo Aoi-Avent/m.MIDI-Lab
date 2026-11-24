@@ -377,7 +377,7 @@ html[data-mix] #dock{grid-template-areas:"mid" "mx" "tp"!important}
 html[data-mix] #dock .mx{display:grid;grid-area:mx;grid-template-columns:1fr 1fr;gap:10px 18px;justify-items:stretch}
 html[data-mix] #dock .mx label{display:flex;align-items:center;gap:8px;font-size:.8em;min-height:44px}
 html[data-mix] #dock .mx input[type=range]{flex:1;min-width:0;width:auto}
-#mnav{flex:none;display:grid;grid-template-columns:repeat(4,1fr);margin:0 -8px;padding:0 calc(env(safe-area-inset-right) + 4px) env(safe-area-inset-bottom) calc(env(safe-area-inset-left) + 4px);background:var(--s1);border-top:1px solid var(--bd)}
+#mnav{flex:none;display:grid;grid-template-columns:repeat(5,1fr);margin:0 -8px;padding:0 calc(env(safe-area-inset-right) + 4px) env(safe-area-inset-bottom) calc(env(safe-area-inset-left) + 4px);background:var(--s1);border-top:1px solid var(--bd)}
 #mnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:50px;border:0;background:none;color:var(--mut);font-size:1.15rem;line-height:1;cursor:pointer;border-radius:0}
 #mnav button small{font-size:.58rem;letter-spacing:.04em}
 #mnav button.on{color:var(--acl);box-shadow:inset 0 2px 0 var(--acl)}
@@ -396,6 +396,43 @@ html[data-sheet] .snk,html[data-mix] .snk{display:none!important}
  #hd .ttl{flex:0 0 auto}#mnav button small{display:none}#mnav button{min-height:38px}
  html{--nvh:40px}#dock .tp button{width:44px;height:44px}#dock .tp #play{width:50px;height:50px}
 }
+
+/* ===== iPhone版 第2段階：シンプル化 ===== */
+.snk,#hudA{display:none!important}
+#hd .ttl{font-size:.95em}
+#imMenu{flex:0 0 auto!important;width:5.2em;font-size:14px;padding:0 6px}
+#demo{padding:0 10px;font-size:14px}
+#hd .row{gap:6px}
+#hd .ic{width:38px;height:38px}
+/* ピアノロールを少し小さく、映像を大きく */
+#cv{flex:1 1 38%}#st>#vzBox{flex:1 1 50%}
+/* シート共通：余白と見出し */
+#pl,#side,#lower{padding:12px!important;background:var(--bg)}
+/* 曲リスト：リストが主役、操作は下に1列 */
+#pl .row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+#pl .chip{padding:.55em 1em;font-size:.9rem}
+#pl select,#pl button{min-height:40px;font-size:15px}
+.pli{border-bottom:1px solid var(--bd);border-radius:0}
+/* トラック：シートとして表示 */
+#lower{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top) + var(--hdh) + 4px);bottom:calc(var(--dkh) + var(--nvh));z-index:30;max-height:none!important;margin:0;border-radius:14px 14px 0 0;overflow:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box}
+html[data-sheet=tr] #lower{display:block!important}
+#tracks{min-width:560px;font-size:.9rem}
+#tracks td,#tracks th{padding:.55em .4em}
+#tracks button,#tracks select,#tracks input[type=checkbox]{min-height:36px}
+#bulk{position:sticky;left:0;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+/* 下部バー：曲名を1行で */
+#npw{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dock .tp{gap:26px}
+@media(orientation:landscape) and (max-height:500px){#pl .row{margin:4px 0 0}}
+
+/* トラックをカード表示に */
+#tracks{min-width:0!important;display:block}#tracks thead{display:none}#tracks tbody{display:block}
+#tracks tr{display:grid;grid-template-columns:auto auto 1fr;gap:8px 10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+#tracks td{padding:0!important;border:0;display:block;min-width:0}
+#tracks td:nth-child(1){grid-column:1/4;font-weight:600}#tracks td:nth-child(2){grid-column:1/4}
+#tracks td select{width:100%}#tracks td input[type=range]{width:100%}
+#tracks button.tg{width:44px;height:40px}
+#mnav button small{font-size:.54rem;white-space:nowrap;letter-spacing:0}
 </style>
 </head><body>
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -409,7 +446,7 @@ try{if(sessionStorage.getItem("midilab.boot"))document.getElementById("boot").re
 setTimeout(function(){var b=document.getElementById("boot");if(b)b.remove()},2200);
 addEventListener("DOMContentLoaded",function(){var t=document.getElementById("hudT"),a=document.getElementById("hudA");if(!t)return;var p=function(n){return String(n).padStart(2,"0")};var f=function(){var d=new Date(),l=document.getElementById("play");t.textContent=p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds());a.textContent=l&&l.dataset.on==="true"?"PLAYING":"STANDBY"};f();setInterval(f,1000)});
 </script>
-<div id="hd"><p class="row"><b class="ttl">MIDI Lab</b><span id="hud" aria-hidden="true"><i class="orb"></i><i class="led"></i><span>SYS <b>ONLINE</b></span><span id="hudA">STANDBY</span><span id="hudT">--:--:--</span><span id="hudM">T+00:00:00</span><span class="sig"><i></i><i></i><i></i><i></i><i></i></span></span><select id="imMenu"><option value="">読み込み ▼</option><option value="midi">midiを読み込み（複数可）</option><option value="sess">設定を読み込み</option></select> <input type="file" id="f" accept=".mid,.midi,audio/midi,audio/x-midi,audio/mid" multiple hidden><input type="file" id="ldSess" accept=".json" hidden><input type="file" id="ldDir" webkitdirectory multiple hidden> <button id="demo">デモ</button> <select id="exMenu"><option value="">書き出し ▼</option><option value="midi">midiを書き出し</option><option value="sess">設定を書き出し</option><option value="both">midi・設定の両方を書き出し</option></select> <label id="pfTg" title="Design＝フル演出（高負荷） / Performance＝低負荷（低スペックPC向け）"><span class="d">Design</span><input type="checkbox" id="pfChk" role="switch" aria-label="Design / Performance 切替"><span class="p">Performance</span></label> <button id="hpBtn" class="ic" title="使い方ガイド" aria-label="使い方ガイド"><svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg></button> <button id="stBtn" class="ic" title="設定（,）" aria-label="設定"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button></p>
+<div id="hd"><p class="row"><b class="ttl">MIDI Lab</b><span id="hud" aria-hidden="true"><i class="orb"></i><i class="led"></i><span>SYS <b>ONLINE</b></span><span id="hudA">STANDBY</span><span id="hudT">--:--:--</span><span id="hudM">T+00:00:00</span><span class="sig"><i></i><i></i><i></i><i></i><i></i></span></span><select id="imMenu"><option value="">＋ 追加</option><option value="midi">midiを読み込み（複数可）</option><option value="sess">設定を読み込み</option></select> <input type="file" id="f" accept=".mid,.midi,audio/midi,audio/x-midi,audio/mid" multiple hidden><input type="file" id="ldSess" accept=".json" hidden><input type="file" id="ldDir" webkitdirectory multiple hidden> <button id="demo">デモ</button> <select id="exMenu"><option value="">書き出し ▼</option><option value="midi">midiを書き出し</option><option value="sess">設定を書き出し</option><option value="both">midi・設定の両方を書き出し</option></select> <label id="pfTg" title="Design＝フル演出（高負荷） / Performance＝低負荷（低スペックPC向け）"><span class="d">Design</span><input type="checkbox" id="pfChk" role="switch" aria-label="Design / Performance 切替"><span class="p">Performance</span></label> <button id="hpBtn" class="ic" title="使い方ガイド" aria-label="使い方ガイド"><svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg></button> <button id="stBtn" class="ic" title="設定（,）" aria-label="設定"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button></p>
 </div>
 <aside id="pl"><h4 class="ph">曲リスト</h4><div id="plList"></div><p class="row"><select id="plSel" style="max-width:24em"><option value="">(空)</option></select> <label class="chip"><input type="checkbox" id="plAuto" checked>連続再生</label> <label class="chip"><input type="checkbox" id="plShuf">シャッフル</label> <select id="plRep"><option value="all">全曲リピート</option><option value="one">1曲リピート</option><option value="off">リピートなし</option></select> <button id="plClear">リストを空に</button></p>
 </aside>
@@ -438,7 +475,7 @@ addEventListener("DOMContentLoaded",function(){var t=document.getElementById("hu
 <label>移調 <input type="number" id="tr" value="0" min="-24" max="24" style="width:4em"></label>
 <label>音量 <input type="range" id="vol" min="0" max="1" step="0.01" value="0.8"></label>
 </div></footer>
-<nav id="mnav" aria-label="メニュー"><button data-s="">▶<small>プレーヤー</small></button><button data-s="pl">≡<small>曲リスト</small></button><button data-s="mx">◎<small>ミキサー</small></button><button data-s="side">✦<small>音・映像</small></button></nav>
+<nav id="mnav" aria-label="メニュー"><button data-s="">▶<small>プレーヤー</small></button><button data-s="pl">≡<small>曲リスト</small></button><button data-s="tr">☰<small>トラック</small></button><button data-s="mx">◎<small>ミキサー</small></button><button data-s="side">✦<small>音・映像</small></button></nav>
 <script>
 const $=s=>document.querySelector(s);
 // ---------- アプリ設定（設定画面と共有。localStorageに保存） ----------
@@ -1460,7 +1497,7 @@ function sz(){var q=function(i){var e=document.getElementById(i);return e?e.offs
 try{var ro=new ResizeObserver(sz);['hd','dock','mnav'].forEach(function(i){ro.observe(document.getElementById(i))})}catch(e){}
 addEventListener('resize',sz);addEventListener('orientationchange',function(){setTimeout(sz,300)});sz();
 function setS(v){H.removeAttribute('data-sheet');H.removeAttribute('data-mix');
- if(v==='pl'||v==='side')H.setAttribute('data-sheet',v);if(v==='mx')H.setAttribute('data-mix','');
+ if(v==='pl'||v==='side'||v==='tr')H.setAttribute('data-sheet',v);if(v==='mx')H.setAttribute('data-mix','');
  [].forEach.call(nav.children,function(b){b.classList.toggle('on',b.dataset.s===v)});
  setTimeout(function(){sz();dispatchEvent(new Event('resize'))},60)}
 nav.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var v=b.dataset.s;setS(H.getAttribute('data-sheet')===v||(v==='mx'&&H.hasAttribute('data-mix'))?'':v)});
