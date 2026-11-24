@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MIDI Lab"><meta name="theme-color" content="#000000"><meta name="format-detection" content="telephone=no">
-<title>MIDI Lab Mobile</title>
+<title>MIDI Lab</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Roboto:wght@400;500;700&display=swap">
 <style>:root{color-scheme:dark;--bg:#0f1014;--s1:#171921;--s2:#20232d;--s3:#2c303c;--bd:#343949;--tx:#f2f3f7;--mut:#a3a9bb;--ac:#8b7bff;--acx:#0d0d16;--acl:var(--ac);
 --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23a3a9bb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
@@ -433,6 +433,43 @@ html[data-sheet=tr] #lower{display:block!important}
 #tracks td select{width:100%}#tracks td input[type=range]{width:100%}
 #tracks button.tg{width:44px;height:40px}
 #mnav button small{font-size:.54rem;white-space:nowrap;letter-spacing:0}
+
+/* ===== melotrace構成の兄弟版：タブ／ミニプレーヤー／再生シート ===== */
+#hd,#mnav,#st,#lower,#pl,#side{display:none!important}
+body{padding:0!important;gap:0!important}
+#pgs{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(150px + env(safe-area-inset-bottom));position:relative;z-index:1}
+.pg{display:none;max-width:560px;margin:0 auto}
+html[data-pg=home] #pg-home,html[data-pg=lib] #pg-lib,html[data-pg=search] #pg-search,html[data-pg=snd] #pg-snd,html[data-pg=set] #pg-set{display:block}
+.pg h1{font-size:1.9rem;margin:.4em 0 .6em;letter-spacing:-.01em}.pg h2{font-size:1.15rem;margin:1.4em 0 .5em}
+.hero{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:22px 18px;background:var(--ac);color:var(--acx);border:1px solid var(--acl);font-size:1.15rem;min-height:0}
+.hero small{opacity:.8;font-size:.78rem}
+.shelf{display:flex;flex-direction:column}
+.card{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--bd);background:none;border-radius:0;text-align:left;width:100%;min-height:56px;border-left:0;border-right:0;border-top:0}
+.card i{flex:none;width:40px;height:40px;background:color-mix(in srgb,var(--ac) 35%,var(--s1));display:grid;place-items:center;font-style:normal;font-size:.8rem;color:var(--acl)}
+.card span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:1rem}.card.on span{color:var(--acl);font-weight:600}
+#hEmpty{margin:18px 0;color:var(--mut)}html[data-has] #hEmpty{display:none}html:not([data-has]) .hero,html:not([data-has]) #pg-home h2{display:none}
+#qs{width:100%;box-sizing:border-box;height:44px;padding:0 12px;margin-bottom:8px}
+.grp{display:flex;flex-direction:column;border:1px solid var(--bd);background:var(--s1)}.grp button{border:0;border-bottom:1px solid var(--bd);text-align:left;min-height:52px;font-size:1rem;background:none}
+html[data-pg=lib] #pl,html[data-pg=snd] #side{display:flex!important;position:static!important;border:0;padding:0!important;background:none;max-height:none!important;overflow:visible}
+html[data-pg=snd] #side{display:block!important}
+#tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);padding:0 4px env(safe-area-inset-bottom);background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--bd)}
+#tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 6px;border:0;background:none;color:var(--mut);min-height:54px}
+#tabs svg{width:22px;height:22px}#tabs span{font-size:.58rem;white-space:nowrap}#tabs button.on{color:var(--acl)}
+#mini{position:fixed;left:8px;right:8px;bottom:calc(56px + env(safe-area-inset-bottom));z-index:39;display:flex;align-items:center;height:56px;background:color-mix(in srgb,var(--s1) 88%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--bd)}
+#mini button{border:0;background:none;height:56px;min-height:0}#miniOpen{flex:1;min-width:0;text-align:left;padding:0 12px;display:flex;flex-direction:column;justify-content:center}
+#miniT{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#miniS{color:var(--mut);font-size:.7rem}
+#miniPlay,#miniNext{width:52px;padding:0}#mini svg{width:24px;height:24px;fill:currentColor}
+#miniBar{position:absolute;left:0;right:0;top:0;height:2px;background:var(--bd)}#miniBar i{display:block;height:100%;width:0;background:var(--acl)}
+#np{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);transform:translateY(105%);transition:transform .32s cubic-bezier(.2,0,0,1);padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)}
+html[data-np] #np{transform:none}
+#npTop{display:flex;align-items:center;gap:6px;padding:6px 0}#npClose{width:44px;height:44px;padding:0;flex:none}#npClose svg{width:24px;height:24px}
+#npSeg{display:grid;grid-template-columns:repeat(4,1fr);flex:1;border:1px solid var(--bd)}#npSeg button{border:0;min-height:38px;font-size:.72rem;padding:0;background:none;color:var(--mut)}#npSeg button.on{background:var(--ac);color:var(--acx)}
+#npBody{flex:1;min-height:0;display:flex;flex-direction:column;overflow:auto}
+#np #cv,#np #vzBox,#np #lower{display:none!important;position:static!important;flex:1 1 auto;min-height:0;max-height:none!important;margin:0;border-radius:0;background:none;padding:0!important}
+html[data-nt=art] #np #cv,html[data-nt=vz] #np #vzBox{display:flex!important}html[data-nt=art] #np #cv{display:block!important}
+html[data-nt=trk] #np #lower{display:block!important}
+#np #vzBox>canvas{flex:1;min-height:0}#np #dock{margin-bottom:6px;animation:none!important}
+html[data-np] #mini,html[data-np] #tabs{visibility:hidden}
 </style>
 </head><body>
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -475,7 +512,19 @@ addEventListener("DOMContentLoaded",function(){var t=document.getElementById("hu
 <label>移調 <input type="number" id="tr" value="0" min="-24" max="24" style="width:4em"></label>
 <label>音量 <input type="range" id="vol" min="0" max="1" step="0.01" value="0.8"></label>
 </div></footer>
-<nav id="mnav" aria-label="メニュー"><button data-s="">▶<small>プレーヤー</small></button><button data-s="pl">≡<small>曲リスト</small></button><button data-s="tr">☰<small>トラック</small></button><button data-s="mx">◎<small>ミキサー</small></button><button data-s="side">✦<small>音・映像</small></button></nav>
+<div id="pgs"><section class="pg" id="pg-home"><h1>今すぐ聴く</h1>
+<button id="hShuf" class="hero"><b>シャッフル再生</b><small>曲リストをランダムに流します</small></button>
+<div id="hEmpty"><p>まだ曲がありません。MIDIを追加するか、デモを試してください。</p><button id="hAdd">MIDIを追加</button> <button id="hDemo">デモを再生</button></div>
+<h2>曲</h2><div id="hShelf" class="shelf"></div></section>
+<section class="pg" id="pg-lib"><h1>ライブラリ</h1></section>
+<section class="pg" id="pg-search"><h1>検索</h1><input id="qs" type="search" placeholder="曲名で探す"><div id="qr"></div></section>
+<section class="pg" id="pg-snd"><h1>音・映像</h1></section>
+<section class="pg" id="pg-set"><h1>取込・設定</h1><div class="grp">
+<button data-a="add">MIDIを追加</button><button data-a="demo">デモを再生</button><button data-a="loadS">設定を読み込み</button><button data-a="saveS">設定を書き出し</button><button data-a="set">詳細設定</button><button data-a="help">使い方ガイド</button></div></section></div>
+<div id="mini"><div id="miniBar"><i></i></div><button id="miniOpen"><span id="miniT">未選択</span><small id="miniS">タップでプレーヤーを開く</small></button><button id="miniPlay" aria-label="再生/一時停止"></button><button id="miniNext" aria-label="次の曲"></button></div>
+<nav id="tabs"><button data-pg="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z"/></svg><span>今すぐ聴く</span></button><button data-pg="lib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M4 12h12M4 18h8M19 15v-9l-3 1"/><circle cx="17" cy="17" r="2"/></svg><span>ライブラリ</span></button><button data-pg="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>検索</span></button><button data-pg="snd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8v8M9 4v16M14 7v10M19 10v4"/></svg><span>音・映像</span></button><button data-pg="set"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg><span>取込・設定</span></button></nav>
+<div id="np"><div id="npTop"><button id="npClose" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div id="npSeg"><button data-nt="art">ピアノロール</button><button data-nt="vz">ビジュアル</button><button data-nt="trk">トラック</button><button data-nt="mix">ミキサー</button></div></div><div id="npBody"></div><div id="npDock"></div></div>
+<nav id="mnav" hidden style="display:none" aria-label="メニュー"><button data-s="">▶<small>プレーヤー</small></button><button data-s="pl">≡<small>曲リスト</small></button><button data-s="tr">☰<small>トラック</small></button><button data-s="mx">◎<small>ミキサー</small></button><button data-s="side">✦<small>音・映像</small></button></nav>
 <script>
 const $=s=>document.querySelector(s);
 // ---------- アプリ設定（設定画面と共有。localStorageに保存） ----------
@@ -1515,6 +1564,42 @@ function unlock(){try{if(navigator.audioSession)navigator.audioSession.type='pla
 ['touchend','click'].forEach(function(t){addEventListener(t,unlock,{passive:true})});
 function wake(){try{if(typeof ctx!=='undefined'&&ctx&&ctx.state!=='running')ctx.resume()}catch(e){}}
 document.addEventListener('visibilitychange',function(){if(!document.hidden)wake()});addEventListener('pageshow',wake);
+})();
+</script>
+<script>
+// ===== melotrace構成シェル（既存の要素を再配置するだけ。エンジンはそのまま） =====
+(function(){
+var H=document.documentElement,$=function(s){return document.querySelector(s)},A=function(s){return[].slice.call(document.querySelectorAll(s))};
+$('#pg-lib').appendChild($('#pl'));$('#pg-snd').appendChild($('#side'));
+var nb=$('#npBody');nb.appendChild($('#cv'));nb.appendChild($('#vzBox'));nb.appendChild($('#lower'));$('#npDock').appendChild($('#dock'));
+function pg(k){H.setAttribute('data-pg',k);A('#tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.pg===k)});$('#pgs').scrollTop=0}
+function nt(k){H.setAttribute('data-nt',k);if(k==='mix')H.setAttribute('data-mix','');else H.removeAttribute('data-mix');A('#npSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.nt===k)});setTimeout(function(){dispatchEvent(new Event('resize'))},60)}
+function np(o){if(o)H.setAttribute('data-np','');else H.removeAttribute('data-np');setTimeout(function(){dispatchEvent(new Event('resize'))},340)}
+A('#tabs button').forEach(function(b){b.onclick=function(){pg(b.dataset.pg)}});
+A('#npSeg button').forEach(function(b){b.onclick=function(){nt(b.dataset.nt)}});
+$('#miniOpen').onclick=function(){np(1)};$('#npClose').onclick=function(){np(0)};
+// 下にスワイプで閉じる
+var y0=null;$('#npTop').addEventListener('touchstart',function(e){y0=e.touches[0].clientY},{passive:true});
+$('#npTop').addEventListener('touchend',function(e){if(y0!=null&&e.changedTouches[0].clientY-y0>60)np(0);y0=null},{passive:true});
+var P='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',Z='<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>',N='<svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>';
+$('#miniNext').innerHTML=N;$('#miniPlay').innerHTML=P;
+$('#miniPlay').onclick=function(){$('#play').click()};$('#miniNext').onclick=function(){$('#plNext').click()};
+var last='';
+setInterval(function(){var on=$('#play').dataset.on==='true',t=($('#msg').textContent||'').replace(/^>\s*/,'').replace(/_$/,'');
+ var k=(on?1:0)+t;if(k!==last){last=k;$('#miniPlay').innerHTML=on?Z:P;var it=PL.items[PL.i];$('#miniT').textContent=it?it.name.replace(/\.midi?$/i,''):(t||'未選択')}
+ var sk=$('#seek');$('#miniBar i').style.width=(sk.value/10)+'%'},250);
+// 曲の一覧（ホーム・検索）
+function card(k,it){var b=document.createElement('button');b.className='card'+(k===PL.i?' on':'');b.innerHTML='<i>MID</i><span></span>';b.lastChild.textContent=it.name.replace(/\.midi?$/i,'');b.onclick=function(){plGo(k,true);np(1)};return b}
+function fill(){var n=PL.items.length;if(n)H.setAttribute('data-has','');else H.removeAttribute('data-has');
+ var sh=$('#hShelf');sh.innerHTML='';PL.items.forEach(function(it,k){sh.appendChild(card(k,it))});filt()}
+function filt(){var q=$('#qs').value.trim().toLowerCase(),r=$('#qr');r.innerHTML='';if(!q)return;PL.items.forEach(function(it,k){if(it.name.toLowerCase().indexOf(q)>=0)r.appendChild(card(k,it))})}
+$('#qs').oninput=filt;var sig='';setInterval(function(){var g=PL.items.length+'#'+PL.i+'#'+PL.items.map(function(x){return x.name}).join('|');if(g!==sig){sig=g;fill()}},400);
+$('#hShuf').onclick=function(){if(!PL.items.length)return;$('#plShuf').checked=true;plGo(Math.floor(Math.random()*PL.items.length),true);np(1)};
+$('#hAdd').onclick=function(){$('#f').click()};$('#hDemo').onclick=function(){$('#demo').click();np(1)};
+// 取込・設定
+var act={add:function(){$('#f').click()},demo:function(){$('#demo').click();np(1)},loadS:function(){$('#ldSess').click()},saveS:function(){var m=$('#exMenu');m.value='sess';m.dispatchEvent(new Event('change'))},set:function(){$('#stBtn').click()},help:function(){$('#hpBtn').click()}};
+A('#pg-set .grp button').forEach(function(b){b.onclick=function(){act[b.dataset.a]()}});
+pg('home');nt('art');
 })();
 </script>
 </body></html>
